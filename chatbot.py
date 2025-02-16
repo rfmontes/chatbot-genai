@@ -7,9 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
 genai.configure(api_key=GEMINI_API_KEY)
-
 model = genai.GenerativeModel("gemini-1.5-pro-latest")
 
 def process_json_file(json_file):
@@ -38,10 +36,11 @@ def get_response(formatted_data, question):
   for item in formatted_data:
     if item["question"].lower() == question.lower():
       return item['answer']
-  return None
+  return
 
 def main():
   """Loop principal do chatbot."""
+  """Chatbot versão terminal."""
   json_file = "perguntas_escolares_com_respostas.json"
   formatted_data = process_json_file(json_file)
 
@@ -82,7 +81,7 @@ def main():
         print(f"Erro ao conectar com o Gemini: {e}")
 
 def chatbot_response(input_user, history):
-  """Loop principal do chatbot."""
+  """Chatbot para versão web."""
   json_file = "perguntas_escolares_com_respostas.json"
   formatted_data = process_json_file(json_file)
 
@@ -93,7 +92,6 @@ def chatbot_response(input_user, history):
   response = get_response(formatted_data, input_user)
 
   if response:
-    print(response)
     return response
 
   else:
@@ -101,45 +99,11 @@ def chatbot_response(input_user, history):
       chat = model.start_chat(history=history)
       response = chat.send_message(input_user)
       response_text = response.text if hasattr(response, "text") else str(response)
-      print(f"\n{response_text}\n")
 
-      # history.append({"user": input_user, "bot": response_text})
       return response_text
     except Exception as e:
       print(f"Erro ao conectar com o Gemini: {e}")
       return f"Erro ao conectar com o Gemini: {e}"
-
-  
-
-
-  # while True:
-  #   input_user = input("Faça uma pergunta (ou digite 'sair' para encerrar): ")
-
-  #   if input_user.lower() == "sair":
-  #     print("\nHistórico da conversa:")
-
-  #     for entry in history:
-  #       print(f"Usuário: {entry['user']}")
-  #       print(f"Bot: {entry['bot']}\n")
-
-  #     print("\nEncerrando o programa.")
-
-  #     break
-  
-  #   response = get_response(formatted_data, input_user)
-
-  #   if response:
-  #     print(response)
-
-  #   else:
-  #     try:
-  #       response = chat.send_message(input_user)
-  #       response_text = response.text if hasattr(response, "text") else str(response)
-  #       print(f"\n{response_text}\n")
-
-  #       history.append({"user": input_user, "bot": response_text})
-  #     except Exception as e:
-  #       print(f"Erro ao conectar com o Gemini: {e}")
 
 if __name__ == "__main__":
   main()
