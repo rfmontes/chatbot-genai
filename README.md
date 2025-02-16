@@ -71,7 +71,15 @@ GEMINI_API_KEY=SUA_CHAVE_AQUI
 
 Você pode usar o arquivo **.env.example** como referência.
 
-### 5️⃣ Executar o Chatbot (Modo Terminal)
+### 5️⃣ Executar o Chatbot
+
+## (Modo Web)
+
+```bash
+python app.py
+```
+
+## (Modo Terminal)
 
 ```bash
 python chatbot.py
