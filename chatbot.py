@@ -68,17 +68,17 @@ def main():
     response = get_response(formatted_data, input_user)
 
     if response:
-      print(response)
+      print(f"\n{response}\n")
 
     else:
       try:
         response = chat.send_message(input_user)
-        response_text = response.text if hasattr(response, "text") else str(response)
-        print(f"\n{response_text}\n")
-
-        history.append({"user": input_user, "bot": response_text})
+        response = response.text if hasattr(response, "text") else str(response)
+        print(f"\n{response}\n")
       except Exception as e:
         print(f"Erro ao conectar com o Gemini: {e}")
+
+    history.append({"user": input_user, "bot": response})
 
 def chatbot_response(input_user, history):
   """Chatbot para versão web."""
